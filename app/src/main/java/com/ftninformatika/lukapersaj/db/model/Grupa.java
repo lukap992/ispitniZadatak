@@ -32,7 +32,7 @@ public class Grupa {
     private String vremeKreiranja;
 
     @DatabaseField(columnName = FIELD_LISTA_OZNAKA)
-    private List<Grupa> listaOznaka;
+    private String oznaka;
 
 
     @ForeignCollectionField(columnName = FIELD_LISTA_ZADATKA, eager = true)
@@ -74,12 +74,12 @@ public class Grupa {
         this.vremeKreiranja = vremeKreiranja;
     }
 
-    public List<Grupa> getListaOznaka() {
-        return listaOznaka;
+    public String getOznaka() {
+        return oznaka;
     }
 
-    public void setListaOznaka(List<Grupa> listaOznaka) {
-        this.listaOznaka = listaOznaka;
+    public void setOznaka(String oznaka) {
+        this.oznaka = oznaka;
     }
 
     public ForeignCollection<Grupa> getListaZadatka() {
