@@ -2,6 +2,7 @@ package com.ftninformatika.lukapersaj.activites;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -28,6 +29,7 @@ import com.ftninformatika.lukapersaj.adapter.DrawerAdapter;
 import com.ftninformatika.lukapersaj.db.DataBaseHelper;
 import com.ftninformatika.lukapersaj.db.model.Grupa;
 import com.ftninformatika.lukapersaj.db.model.TodoZadatak;
+import com.ftninformatika.lukapersaj.dialog.AboutDialog;
 import com.ftninformatika.lukapersaj.model.NavigationItem;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.dao.ForeignCollection;
@@ -47,7 +49,7 @@ public class DetailActivity extends AppCompatActivity {
     Grupa grupa;
 
     ForeignCollection<TodoZadatak> zadatak;
-
+    private AlertDialog dialog;
     private DrawerLayout drawerLayout;
     private ListView drawerListView;
     private ActionBarDrawerToggle drawerToggle;
@@ -188,11 +190,16 @@ public class DetailActivity extends AppCompatActivity {
         }
         drawerItems.add(new NavigationItem("Prikaz glumaca", "Prikazuje sve grupe", R.drawable.ic_group_black_24dp));
         drawerItems.add(new NavigationItem("Podesavanja", "Podesavanja aplikacije", R.drawable.ic_settings_black_24dp));
+        drawerItems.add(new NavigationItem("Dialog", "About dialog", R.drawable.ic_launcher_background));
 
         DrawerAdapter drawerAdapter = new DrawerAdapter(this, drawerItems);
-        drawerListView = findViewById(R.id.nav_list);
+        drawerListView = findViewById(R.id.nav_list_detail);
         drawerListView.setAdapter(drawerAdapter);
         drawerListView.setOnItemClickListener(new DrawerItemClickListener());
+
+        drawerTitle = getTitle();
+        drawerLayout = findViewById(R.id.detail_drawer_layout);
+        drawerPane = findViewById(R.id.drawer_pane_detail);
 
         drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer){
             @Override
@@ -218,6 +225,16 @@ public class DetailActivity extends AppCompatActivity {
             }else if(position == 1){
                 Intent intent = new Intent(DetailActivity.this, SettingsActivity.class);
                 startActivity(intent);
+            }else if(position == 2){
+                if (dialog == null){
+                    dialog = new AboutDialog(DetailActivity.this).prepareDialog();
+                } else {
+                    if (dialog.isShowing()) {
+                        dialog.dismiss();
+                    }
+                }
+
+                dialog.show();
             }
             drawerLayout.closeDrawer(drawerPane);
         }

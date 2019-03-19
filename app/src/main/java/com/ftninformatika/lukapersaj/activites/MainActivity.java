@@ -1,6 +1,7 @@
 package com.ftninformatika.lukapersaj.activites;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -25,6 +26,7 @@ import com.ftninformatika.lukapersaj.R;
 import com.ftninformatika.lukapersaj.adapter.DrawerAdapter;
 import com.ftninformatika.lukapersaj.db.DataBaseHelper;
 import com.ftninformatika.lukapersaj.db.model.Grupa;
+import com.ftninformatika.lukapersaj.dialog.AboutDialog;
 import com.ftninformatika.lukapersaj.model.NavigationItem;
 import com.j256.ormlite.android.apptools.OpenHelperManager;
 import com.j256.ormlite.stmt.query.In;
@@ -40,7 +42,7 @@ public class MainActivity extends AppCompatActivity {
     private DataBaseHelper dataBaseHelper;
 
      Grupa grupa;
-
+    private AlertDialog dialog;
     private DrawerLayout drawerLayout;
     private ListView drawerListView;
     private ActionBarDrawerToggle drawerToggle;
@@ -179,6 +181,7 @@ public class MainActivity extends AppCompatActivity {
 
         drawerItems.add(new NavigationItem("Prikaz glumaca", "Prikazuje sve grupe", R.drawable.ic_group_black_24dp));
         drawerItems.add(new NavigationItem("Podesavanja", "Podesavanja aplikacije", R.drawable.ic_settings_black_24dp));
+        drawerItems.add(new NavigationItem("Dialog", "About dialog", R.drawable.ic_launcher_background));
 
         DrawerAdapter drawerAdapter = new DrawerAdapter(this, drawerItems);
         drawerListView = findViewById(R.id.nav_list);
@@ -214,6 +217,16 @@ public class MainActivity extends AppCompatActivity {
             }else if(position == 1){
                 Intent intent = new Intent(MainActivity.this, SettingsActivity.class);
                 startActivity(intent);
+            }else if(position == 2){
+                if (dialog == null){
+                    dialog = new AboutDialog(MainActivity.this).prepareDialog();
+                } else {
+                    if (dialog.isShowing()) {
+                        dialog.dismiss();
+                    }
+                }
+
+                dialog.show();
             }
             drawerLayout.closeDrawer(drawerPane);
         }
