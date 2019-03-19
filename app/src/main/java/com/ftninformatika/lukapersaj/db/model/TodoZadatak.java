@@ -105,4 +105,7 @@ public class TodoZadatak {
         this.grupa = grupa;
     }
 
+    public String toString(){
+        return this.naziv;
+    }
 }

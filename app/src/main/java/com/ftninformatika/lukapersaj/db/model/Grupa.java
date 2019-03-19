@@ -29,14 +29,14 @@ public class Grupa {
     private String datumKreiranja;
 
     @DatabaseField(columnName = FIELD_VREME_kreiranja)
-    private String vremeKreiranja;
+    private int vremeKreiranja;
 
     @DatabaseField(columnName = FIELD_LISTA_OZNAKA)
     private String oznaka;
 
 
     @ForeignCollectionField(columnName = FIELD_LISTA_ZADATKA, eager = true)
-    private ForeignCollection<Grupa> listaZadatka;
+    private ForeignCollection<TodoZadatak> listaZadatka;
 
     public Grupa(){
 
@@ -66,11 +66,11 @@ public class Grupa {
         this.datumKreiranja = datumKreiranja;
     }
 
-    public String getVremeKreiranja() {
+    public int getVremeKreiranja() {
         return vremeKreiranja;
     }
 
-    public void setVremeKreiranja(String vremeKreiranja) {
+    public void setVremeKreiranja(int vremeKreiranja) {
         this.vremeKreiranja = vremeKreiranja;
     }
 
@@ -82,11 +82,11 @@ public class Grupa {
         this.oznaka = oznaka;
     }
 
-    public ForeignCollection<Grupa> getListaZadatka() {
+    public ForeignCollection<TodoZadatak> getListaZadatka() {
         return listaZadatka;
     }
 
-    public void setListaZadatka(ForeignCollection<Grupa> listaZadatka) {
+    public void setListaZadatka(ForeignCollection<TodoZadatak> listaZadatka) {
         this.listaZadatka = listaZadatka;
     }
     public String toString(){
