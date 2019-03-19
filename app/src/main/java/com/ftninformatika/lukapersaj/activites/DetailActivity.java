@@ -11,7 +11,10 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
@@ -21,6 +24,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ftninformatika.lukapersaj.R;
+import com.ftninformatika.lukapersaj.adapter.DrawerAdapter;
 import com.ftninformatika.lukapersaj.db.DataBaseHelper;
 import com.ftninformatika.lukapersaj.db.model.Grupa;
 import com.ftninformatika.lukapersaj.db.model.TodoZadatak;
@@ -33,6 +37,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
+
+import static com.ftninformatika.lukapersaj.R.id.izmena_grupe_action_delete;
 
 public class DetailActivity extends AppCompatActivity {
 
@@ -59,6 +65,7 @@ public class DetailActivity extends AppCompatActivity {
         } catch (SQLException e) {
             e.printStackTrace();
         }
+        navigationDrawer();
     }
 
     @SuppressLint("SetTextI18n")
@@ -182,8 +189,65 @@ public class DetailActivity extends AppCompatActivity {
         drawerItems.add(new NavigationItem("Prikaz glumaca", "Prikazuje sve grupe", R.drawable.ic_group_black_24dp));
         drawerItems.add(new NavigationItem("Podesavanja", "Podesavanja aplikacije", R.drawable.ic_settings_black_24dp));
 
+        DrawerAdapter drawerAdapter = new DrawerAdapter(this, drawerItems);
+        drawerListView = findViewById(R.id.nav_list);
+        drawerListView.setAdapter(drawerAdapter);
+        drawerListView.setOnItemClickListener(new DrawerItemClickListener());
+
+        drawerToggle = new ActionBarDrawerToggle(this, drawerLayout, toolbar, R.string.open_drawer, R.string.close_drawer){
+            @Override
+            public void onDrawerOpened(View drawerView) {
+                getSupportActionBar().setTitle(drawerTitle);
+                super.onDrawerOpened(drawerView);
+            }
+
+            @Override
+            public void onDrawerClosed(View drawerView) {
+                getSupportActionBar().setTitle(drawerTitle);
+                super.onDrawerClosed(drawerView);
+            }
+        };
 
     }
+    private class DrawerItemClickListener implements ListView.OnItemClickListener{
+
+        @Override
+        public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            if(position == 0){
+                getIntent();
+            }else if(position == 1){
+                Intent intent = new Intent(DetailActivity.this, SettingsActivity.class);
+                startActivity(intent);
+            }
+            drawerLayout.closeDrawer(drawerPane);
+        }
+
+    }
+
+
+
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.detail_menu, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()){
+            case R.id.izmena_grupe_action_update:
+                update();
+                break;
+            case R.id.izmena_grupe_action_delete:
+                delete();
+                break;
+            case R.id.dodaj_zadatak_action_add_zadatak:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
     public static boolean isValidDate(String inDate) {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
         dateFormat.setLenient(false);
